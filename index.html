@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VOLT-GUARD</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="leaf_png_green 1.svg">
+</head>
+
+<body>
+
+    <img id="image" src="logoooo.png" alt="logo" >
+    <div class="red-alert screen">
+        <div class="overlap-group">
+            <div id="x205-v">2.05V</div>
+        </div>
+        <div class="ellipse-container">
+            <div id="1" class="ellipse"></div>
+            <div id="2" class="ellipse"></div>
+            <div id="3" class="ellipse"></div>
+        </div>
+        <div id="x0-2-v">0 - 2V</div>
+        <div class="overlap-group1">
+            <h1 id="title">ALERT!</h1><br>
+        </div>
+
+        <div class="overlap-group1">
+            <h2 id="not-required-voltage">Not Required Voltage</h2>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyDO_WUcWjfGOLyrqxpSWDQWAO1T7s1bLjc",
+            authDomain: "esp32-check-25f69.firebaseapp.com",
+            databaseURL: "https://esp32-check-25f69-default-rtdb.firebaseio.com",
+            projectId: "esp32-check-25f69",
+            storageBucket: "esp32-check-25f69.appspot.com",
+            messagingSenderId: "4056580192",
+            appId: "1:4056580192:web:c48cb212c6159183bd8305",
+            measurementId: "G-8XJ3X13C4Y"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        // getting reference to the database
+        var database = firebase.database();
+        var maindata = database.ref('data');
+        //getting reference to the data we want
+        //fetch the data
+        maindata.on('child_added', (snapshot) => {
+            const datanew = snapshot.val();
+            document.getElementById("x205-v").innerHTML = datanew;
+            if (datanew <= 2) {
+                const element = document.getElementById("1");  // Get the DIV element
+                element.classList.remove("ellipse"); // Remove mystyle class from DIV
+                element.classList.add("ellipse-1");
+                const element2 = document.getElementById("2");  // Get the DIV element
+                element2.classList.remove("ellipse-2"); // Remove mystyle class from DIV
+                element2.classList.add("ellipse");
+                const element3 = document.getElementById("3");  // Get the DIV element
+                element3.classList.remove("ellipse-3"); // Remove mystyle class from DIV
+                element3.classList.add("ellipse");
+                document.getElementById("x0-2-v").innerHTML = "0 - 2V";
+                document.getElementById("title").innerHTML = "ALERT!";
+                document.getElementById("title").style.color = "red";
+                document.getElementById("not-required-voltage").innerHTML = "Not Required Voltage";
+                
+            }
+            else if (datanew > 2 && datanew <=4.5) {
+                const element = document.getElementById("1");  // Get the DIV element
+                element.classList.remove("ellipse-1"); // Remove mystyle class from DIV
+                element.classList.add("ellipse");
+                const element2 = document.getElementById("2");  // Get the DIV element
+                element2.classList.remove("ellipse"); // Remove mystyle class from DIV
+                element2.classList.add("ellipse-2");
+                const element3 = document.getElementById("3");  // Get the DIV element
+                element3.classList.remove("ellipse-3"); // Remove mystyle class from DIV
+                element3.classList.add("ellipse");
+                document.getElementById("x0-2-v").innerHTML = "2V - 4.5V";
+                document.getElementById("title").innerHTML = "LOW!";
+                document.getElementById("title").style.color = "#FFB800";
+                document.getElementById("not-required-voltage").innerHTML = "Low voltage";
+            }
+            else if  (datanew > 4.5) {
+                const element = document.getElementById("1");  // Get the DIV element
+                element.classList.remove("ellipse-1"); // Remove mystyle class from DIV
+                element.classList.add("ellipse");
+                const element2 = document.getElementById("2");  // Get the DIV element
+                element2.classList.remove("ellipse-2"); // Remove mystyle class from DIV
+                element2.classList.add("ellipse");
+                const element3 = document.getElementById("3");  // Get the DIV element
+                element3.classList.remove("ellipse"); // Remove mystyle class from DIV
+                element3.classList.add("ellipse-3");
+                document.getElementById("x0-2-v").innerHTML = "4.5V - 6V";
+                document.getElementById("title").innerHTML = "PERFECT";
+                document.getElementById("title").style.color = "#77FF23";
+                document.getElementById("not-required-voltage").innerHTML = "Required Voltage";
+            }
+        });
+
+
+    </script>
+</body>
+
+</html>
