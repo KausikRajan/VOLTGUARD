@@ -11,7 +11,7 @@
 
 <body>
 
-    <img id="image" src="logoooo.png" alt="logo" >
+    <img id="image" src="logoooo.png" alt="logo">
     <div class="red-alert screen">
         <div class="overlap-group">
             <div id="x205-v">2.05V</div>
@@ -30,7 +30,7 @@
             <h2 id="not-required-voltage">Not Required Voltage</h2>
         </div>
     </div>
-
+    <audio id="myAudio" src="beep-07a.wav" loop></audio>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
 
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
@@ -60,13 +60,13 @@
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
-        // getting reference to the database
         var database = firebase.database();
         var maindata = database.ref('data');
-        //getting reference to the data we want
-        //fetch the data
+
+        
         maindata.on('child_added', (snapshot) => {
             const datanew = snapshot.val();
+            const y = document.getElementById("myAudio"); 
             document.getElementById("x205-v").innerHTML = datanew;
             if (datanew <= 2) {
                 const element = document.getElementById("1");  // Get the DIV element
@@ -82,9 +82,10 @@
                 document.getElementById("title").innerHTML = "ALERT!";
                 document.getElementById("title").style.color = "red";
                 document.getElementById("not-required-voltage").innerHTML = "Not Required Voltage";
-                
+                y.play();
+
             }
-            else if (datanew > 2 && datanew <=4.5) {
+            else if (datanew > 2 && datanew <= 4.5) {
                 const element = document.getElementById("1");  // Get the DIV element
                 element.classList.remove("ellipse-1"); // Remove mystyle class from DIV
                 element.classList.add("ellipse");
@@ -97,9 +98,9 @@
                 document.getElementById("x0-2-v").innerHTML = "2V - 4.5V";
                 document.getElementById("title").innerHTML = "LOW!";
                 document.getElementById("title").style.color = "#FFB800";
-                document.getElementById("not-required-voltage").innerHTML = "Low voltage";
+                document.getElementById("not-required-voltage").innerHTML = "Low voltage";y.pause();
             }
-            else if  (datanew > 4.5) {
+            else if (datanew > 4.5) {
                 const element = document.getElementById("1");  // Get the DIV element
                 element.classList.remove("ellipse-1"); // Remove mystyle class from DIV
                 element.classList.add("ellipse");
@@ -112,7 +113,7 @@
                 document.getElementById("x0-2-v").innerHTML = "4.5V - 6V";
                 document.getElementById("title").innerHTML = "PERFECT";
                 document.getElementById("title").style.color = "#77FF23";
-                document.getElementById("not-required-voltage").innerHTML = "Required Voltage";
+                document.getElementById("not-required-voltage").innerHTML = "Required Voltage";y.pause();
             }
         });
 
